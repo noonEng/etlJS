@@ -5,7 +5,6 @@ export default class Madrid {
     this._name = 'Madrid';
     this.postData = this.postData;
     let psgObject = new PSG();
-    psgObject.browserStorageOverrider();
   }
   get name() {
     return this._name;
