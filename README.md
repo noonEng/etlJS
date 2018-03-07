@@ -13,3 +13,7 @@ The ETL capturing framework for web
 
 # Run production build:
 1. npm run build
+
+# Consume it:
+1. var a = new etljs.SynchronousPost();
+2. a.postData(url, {data});
