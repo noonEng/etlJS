@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from 'store'
+const R = require('ramda');
 const etlStoreDataConstant = require('../constants/SynchronousPostConstants').etlDataConstant
 export default class SynchronousPost {
   constructor() {
@@ -30,7 +31,7 @@ export default class SynchronousPost {
   getAndStoreDataToStore(value, data) {
     let returnData
     let currentValue = this.getDataFromStore(value)
-    returnData = currentValue ? this.setDataInStore(value, [...this.getDataFromStore(value), ...data]) : this.setDataInStore(value, data)
+    returnData = currentValue ? this.setDataInStore(value, R.concat(this.getDataFromStore(value), data)) : this.setDataInStore(value, data)
     return returnData
   }
   getDataFromStore(value) {
