@@ -10,26 +10,28 @@ export default class SynchronousPost {
     this.setDataInStore = this.setDataInStore
     this.removeDataFromStore = this.removeDataFromStore
     this.getAndStoreDataToStore = this.getAndStoreDataToStore
+    this.getExistingStoreDataAndClear = this.getExistingStoreDataAndClear
   }
   get name() {
     return this._name
   }
+  getExistingStoreDataAndClear(value) {
+    let returnValue;
+    returnValue = this.getDataFromStore(value)
+    this.removeDataFromStore(value)
+    return returnValue
+  }
   getAndRemoveDataFromStore(value) {
     let returnData
-    if (this.getDataFromStore(value)) {
-      returnData = this.getDataFromStore(value)
-      this.removeDataFromStore(value)
-    } else {
-      // Do nothing
-    }
+    let currentValue = this.getDataFromStore(value)
+    returnData = currentValue ? this.getExistingStoreDataAndClear(value) : undefined
     return returnData
   }
   getAndStoreDataToStore(value, data) {
-    if(this.getDataFromStore(value)) {
-      this.setDataInStore(value, [...this.getDataFromStore(value), ...data])
-    } else {
-      this.setDataInStore(value, data)
-    }
+    let returnData
+    let currentValue = this.getDataFromStore(value)
+    returnData = currentValue ? this.setDataInStore(value, [...this.getDataFromStore(value), ...data]) : this.setDataInStore(value, data)
+    return returnData
   }
   getDataFromStore(value) {
     return store.get(value)
@@ -42,7 +44,7 @@ export default class SynchronousPost {
   }
   postData(url, myData) {
     // Send a POST request
-    let postData = {etlData: []}
+    let postData = { etlData: [] }
     postData.etlData = this.getAndRemoveDataFromStore(etlStoreDataConstant) || postData.etlData
     postData.etlData.push(myData)
     axios({
@@ -50,12 +52,12 @@ export default class SynchronousPost {
       url: url,
       data: postData
     })
-    .then(response => {
-      // Do nothing
-    })
-    .catch(err => {
-      console.log(err)
-      this.getAndStoreDataToStore(etlStoreDataConstant, postData.etlData)
-    })
+      .then(response => {
+        // Do nothing
+      })
+      .catch(err => {
+        console.log(err)
+        this.getAndStoreDataToStore(etlStoreDataConstant, postData.etlData)
+      })
   }
 }

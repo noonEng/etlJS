@@ -94,3 +94,17 @@ describe('Given an instance of my SynchronousPost library', () => {
     });
   });
 });
+
+describe('Given an instance of my SynchronousPost library', () => {
+  before(() => {
+    myInstance = new SynchronousPost();
+    myInstance.setDataInStore('testDataCase4', [{mia: 'san mia'}])
+  });
+  describe('when I call getExistingStoreDataAndClear', () => {
+    it('should return the an array and include my data plus the value of that key in store should be cleared', () => {
+      expect(myInstance.getExistingStoreDataAndClear).to.be.a('function');
+      expect(myInstance.getExistingStoreDataAndClear('testDataCase4')).to.be.an('array').that.deep.include({mia: 'san mia'});
+      expect(myInstance.getDataFromStore('testDataCase4')).to.be.an('undefined');
+    });
+  });
+});
