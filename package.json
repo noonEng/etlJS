@@ -24,7 +24,9 @@
   },
   "homepage": "https://github.com/noonEng/etlJS#readme",
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "ramda": "^0.25.0",
+    "store": "^2.0.12"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
